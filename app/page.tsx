@@ -1,6 +1,6 @@
 'use client';
 
-import {CSSProperties, FormEvent, PointerEvent, WheelEvent, useRef, useState} from 'react';
+import {CSSProperties, FormEvent, PointerEvent, WheelEvent, useEffect, useRef, useState} from 'react';
 import {
   ArrowDown, ArrowRight, Check, ChevronLeft, ChevronRight, Instagram,
   Mail, Menu, Music2, Play, Quote, Send, Sparkles, X
@@ -27,9 +27,27 @@ const gallery = [
 export default function Home(){
   const[menuOpen,setMenuOpen]=useState(false);
   const[galleryIndex,setGalleryIndex]=useState(0);
+  const[lightboxIndex,setLightboxIndex]=useState<number|null>(null);
   const[sent,setSent]=useState(false);
   const wheelLocked=useRef(false);
   const dragStart=useRef<number|null>(null);
+  const dragDistance=useRef(0);
+
+  useEffect(()=>{
+    if(lightboxIndex===null)return;
+    const previousOverflow=document.body.style.overflow;
+    const closeOnEscape=(event:KeyboardEvent)=>{
+      if(event.key==='Escape')setLightboxIndex(null);
+      if(event.key==='ArrowLeft')setLightboxIndex(current=>current===null?null:(current-1+gallery.length)%gallery.length);
+      if(event.key==='ArrowRight')setLightboxIndex(current=>current===null?null:(current+1)%gallery.length);
+    };
+    document.body.style.overflow='hidden';
+    window.addEventListener('keydown',closeOnEscape);
+    return()=>{
+      document.body.style.overflow=previousOverflow;
+      window.removeEventListener('keydown',closeOnEscape);
+    };
+  },[lightboxIndex]);
 
   const scrollTo=(id:string)=>{
     document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
@@ -50,12 +68,18 @@ export default function Home(){
 
   function startGalleryDrag(event:PointerEvent<HTMLDivElement>){
     dragStart.current=event.clientX;
+    dragDistance.current=0;
     event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function trackGalleryDrag(event:PointerEvent<HTMLDivElement>){
+    if(dragStart.current!==null)dragDistance.current=event.clientX-dragStart.current;
   }
 
   function finishGalleryDrag(event:PointerEvent<HTMLDivElement>){
     if(dragStart.current===null)return;
     const distance=event.clientX-dragStart.current;
+    dragDistance.current=distance;
     dragStart.current=null;
     if(Math.abs(distance)>45)moveGallery(distance<0?1:-1);
   }
@@ -146,10 +170,20 @@ export default function Home(){
 
     <section className="gallery section" id="galeria">
       <div className="heading-row"><div><div className="section-kicker light">05 — GALERIA</div><h2>Palco, encontros<br/>e <em>memórias.</em></h2><p className="gallery-hint">Role, arraste ou deslize para explorar.</p></div><div className="gallery-controls"><button aria-label="Foto anterior" onClick={()=>moveGallery(-1)}><ChevronLeft/></button><span>0{galleryIndex+1} / 0{gallery.length}</span><button aria-label="Próxima foto" onClick={()=>moveGallery(1)}><ChevronRight/></button></div></div>
-      <div className="gallery-viewport" onWheel={handleGalleryWheel} onPointerDown={startGalleryDrag} onPointerUp={finishGalleryDrag} onPointerCancel={()=>{dragStart.current=null}}>
-        <div className="gallery-strip" style={{transform:`translate3d(-${galleryIndex*16.5}%,0,0)`}}>{gallery.map((item,i)=>{const offset=i-galleryIndex;return <figure className={i===galleryIndex?'active':''} style={{'--rotation':`${Math.max(-3.8,Math.min(3.8,offset*1.25))}deg`,'--lift':`${Math.min(14,Math.abs(offset)*5)}px`} as CSSProperties} key={item.label}><div style={{backgroundImage:`linear-gradient(0deg,#130b0d18,#130b0d08),url('${item.src}')`,backgroundPosition:'center'}}/><figcaption>{item.label}</figcaption></figure>})}</div>
+      <div className="gallery-viewport" onWheel={handleGalleryWheel} onPointerDown={startGalleryDrag} onPointerMove={trackGalleryDrag} onPointerUp={finishGalleryDrag} onPointerCancel={()=>{dragStart.current=null}}>
+        <div className="gallery-strip" style={{transform:`translate3d(-${galleryIndex*16.5}%,0,0)`}}>{gallery.map((item,i)=>{const offset=i-galleryIndex;return <figure className={i===galleryIndex?'active':''} style={{'--rotation':`${Math.max(-3.8,Math.min(3.8,offset*1.25))}deg`,'--lift':`${Math.min(14,Math.abs(offset)*5)}px`} as CSSProperties} key={item.label}><button className="gallery-photo" aria-label={`Ampliar foto: ${item.label}`} onClick={()=>{if(Math.abs(dragDistance.current)<8)setLightboxIndex(i)}} style={{backgroundImage:`linear-gradient(0deg,#130b0d18,#130b0d08),url('${item.src}')`,backgroundPosition:'center'}}/><figcaption>{item.label}</figcaption></figure>})}</div>
       </div>
     </section>
+
+    {lightboxIndex!==null&&<div className="lightbox" role="dialog" aria-modal="true" aria-label={`Foto ampliada: ${gallery[lightboxIndex].label}`} onClick={()=>setLightboxIndex(null)}>
+      <button className="lightbox-close" aria-label="Fechar foto ampliada" onClick={()=>setLightboxIndex(null)}><X/></button>
+      <button className="lightbox-nav previous" aria-label="Foto anterior" onClick={event=>{event.stopPropagation();setLightboxIndex((lightboxIndex-1+gallery.length)%gallery.length)}}><ChevronLeft/></button>
+      <figure className="lightbox-content" onClick={event=>event.stopPropagation()}>
+        <img src={gallery[lightboxIndex].src} alt={gallery[lightboxIndex].label}/>
+        <figcaption>{gallery[lightboxIndex].label}<span>0{lightboxIndex+1} / 0{gallery.length}</span></figcaption>
+      </figure>
+      <button className="lightbox-nav next" aria-label="Próxima foto" onClick={event=>{event.stopPropagation();setLightboxIndex((lightboxIndex+1)%gallery.length)}}><ChevronRight/></button>
+    </div>}
 
     <section className="press section"><div><Sparkles/><div><span>PRODUÇÃO, IMPRENSA E PARCERIAS</span><h3>Material profissional</h3><p>Biografia, fotos oficiais e informações para produção estão disponíveis mediante solicitação.</p></div></div><button onClick={()=>scrollTo('contato')}><Mail/> Solicitar material</button></section>
 
