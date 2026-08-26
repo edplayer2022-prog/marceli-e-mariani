@@ -12,9 +12,13 @@ const shows = [
   {day:'15',month:'PRÃ“X.',city:'Vineyard Grill, MA',venue:'13 Beach Street Extension',type:'Show ao vivo'},
 ];
 const gallery = [
-  {label:'Ao vivo',pos:'66% center'},
-  {label:'Entre irmÃ£s',pos:'78% center'},
-  {label:'Nossa histÃ³ria',pos:'55% 25%'},
+  {label:'Show especial',src:'/images/show-america.jpg',pos:'center'},
+  {label:'Marcelli & Mariani ao vivo',src:'/images/show-logo.jpg',pos:'center'},
+  {label:'Entre irmÃ£s',src:'/images/portrait-sisters.jpg',pos:'center'},
+  {label:'Por trÃ¡s das cÃ¢meras',src:'/images/behind-camera.jpg',pos:'center'},
+  {label:'Encontros',src:'/images/backstage-guests.jpg',pos:'center'},
+  {label:'Juntas no palco',src:'/images/show-together.jpg',pos:'center'},
+  {label:'Alegria no palco',src:'/images/performance-green.jpg',pos:'center'},
 ];
 
 export default function Home(){
@@ -45,6 +49,7 @@ export default function Home(){
 
     <section className="hero" id="inicio">
       <div className="hero-shade"/>
+      <div className="hero-photos" aria-hidden="true"><i/><i/><i/></div>
       <div className="hero-content reveal">
         <p className="eyebrow"><span/> IRMÃƒS Â· CANTORAS Â· ARTISTAS</p>
         <h1>Duas vozes.<br/>Uma sÃ³ <em>histÃ³ria.</em></h1>
@@ -89,7 +94,7 @@ export default function Home(){
 
     <section className="video-section" id="video">
       <div className="video-copy"><div className="section-kicker light">03 â€” AO VIVO</div><h2>MÃºsica feita<br/>para viver<br/><em>juntos.</em></h2></div>
-      <button className="video-play" onClick={()=>scrollTo('contato')} aria-label="Assistir aos vÃ­deos no Instagram"><Play fill="currentColor"/></button>
+      <button className="video-play" onClick={()=>window.open('https://www.instagram.com/marcelliemariani/','_blank','noopener,noreferrer')} aria-label="Assistir aos vÃ­deos no Instagram"><Play fill="currentColor"/></button>
       <div className="video-caption"><span>MARCELLI & MARIANI</span><small>Assista aos covers e apresentaÃ§Ãµes</small></div>
     </section>
 
@@ -102,14 +107,14 @@ export default function Home(){
     </section>
 
     <section className="gallery section" id="galeria">
-      <div className="heading-row"><div><div className="section-kicker light">05 â€” GALERIA</div><h2>Entre palcos<br/>e <em>memÃ³rias.</em></h2></div><div className="gallery-controls"><button onClick={()=>setGalleryIndex((galleryIndex+2)%3)}><ChevronLeft/></button><span>0{galleryIndex+1} / 03</span><button onClick={()=>setGalleryIndex((galleryIndex+1)%3)}><ChevronRight/></button></div></div>
-      <div className="gallery-strip" style={{transform:`translateX(-${galleryIndex*28}%)`}}>{gallery.map((item,i)=><figure className={i===galleryIndex?'active':''} key={item.label}><div style={{backgroundPosition:item.pos}}/><figcaption>{item.label}</figcaption></figure>)}</div>
+      <div className="heading-row"><div><div className="section-kicker light">05 â€” GALERIA</div><h2>Entre palcos<br/>e <em>memÃ³rias.</em></h2></div><div className="gallery-controls"><button onClick={()=>setGalleryIndex((galleryIndex+gallery.length-1)%gallery.length)}><ChevronLeft/></button><span>0{galleryIndex+1} / 0{gallery.length}</span><button onClick={()=>setGalleryIndex((galleryIndex+1)%gallery.length)}><ChevronRight/></button></div></div>
+      <div className="gallery-strip" style={{transform:`translateX(-${galleryIndex*16.5}%)`}}>{gallery.map((item,i)=><figure className={i===galleryIndex?'active':''} key={item.label}><div style={{backgroundImage:`linear-gradient(0deg,#26191d55,#26191d22),url('${item.src}')`,backgroundPosition:item.pos}}/><figcaption>{item.label}</figcaption></figure>)}</div>
     </section>
 
     <section className="press section"><div><Sparkles/><div><span>MATERIAL PARA IMPRENSA E PRODUÃ‡ÃƒO</span><h3>Press kit oficial</h3><p>Bio, fotos em alta, release, mapa de palco e rider tÃ©cnico.</p></div></div><button onClick={()=>alert('Press kit de demonstraÃ§Ã£o â€” conecte seu arquivo final aqui.')}><Download/> Baixar press kit</button></section>
 
     <section className="contact section" id="contato">
-      <div className="contact-copy"><div className="section-kicker light">06 â€” CONTATO</div><h2>Vamos criar<br/>uma noite<br/><em>inesquecÃ­vel?</em></h2><p>Shows, restaurantes, festivais, eventos privados e parcerias nos Estados Unidos. Conte um pouco sobre o seu evento.</p><a href="#contato"><Mail/> Contato via Instagram</a></div>
+      <div className="contact-copy"><div className="section-kicker light">06 â€” CONTATO</div><h2>Vamos criar<br/>uma noite<br/><em>inesquecÃ­vel?</em></h2><p>Shows, restaurantes, festivais, eventos privados e parcerias nos Estados Unidos. Conte um pouco sobre o seu evento.</p><a href="tel:+15085075431"><Mail/> +1 (508) 507-5431</a></div>
       <form onSubmit={submitForm}>
         <label>SEU NOME<input required name="name" placeholder="Como podemos chamar vocÃª?"/></label>
         <div className="form-row"><label>E-MAIL<input required type="email" name="email" placeholder="voce@empresa.com"/></label><label>TELEFONE<input name="phone" placeholder="(00) 00000-0000"/></label></div>
@@ -121,8 +126,8 @@ export default function Home(){
 
     <section className="newsletter section"><div><Music2/><span>BASTIDORES, DATAS E NOVIDADES</span><h2>Mais perto<br/>da nossa mÃºsica.</h2></div><form onSubmit={e=>{e.preventDefault();alert('VocÃª entrou para a nossa lista!')}}><input required type="email" placeholder="Seu melhor e-mail"/><button aria-label="Cadastrar e-mail"><ArrowRight/></button></form></section>
 
-    <footer><div className="footer-name">MARCELLI <i>& MARIANI</i></div><div className="footer-social"><a href="#inicio"><Instagram/> Instagram</a><a href="#video"><Youtube/> VÃ­deos</a><a href="#musica"><Music2/> MÃºsica</a></div><div className="footer-bottom"><span>Â© 2026 MARCELLI & MARIANI Â· TODOS OS DIREITOS RESERVADOS</span><button onClick={()=>scrollTo('inicio')}>VOLTAR AO TOPO â†‘</button></div></footer>
-    <a className="whatsapp" href="#contato" aria-label="Contato pelo WhatsApp"><span>WA</span></a>
+    <footer><div className="footer-name">MARCELLI <i>& MARIANI</i></div><div className="footer-social"><a href="https://www.instagram.com/marcelliemariani/" target="_blank" rel="noreferrer"><Instagram/> Instagram</a><a href="#video"><Youtube/> VÃ­deos</a><a href="#musica"><Music2/> MÃºsica</a></div><div className="footer-bottom"><span>Â© 2026 MARCELLI & MARIANI Â· TODOS OS DIREITOS RESERVADOS</span><button onClick={()=>scrollTo('inicio')}>VOLTAR AO TOPO â†‘</button></div></footer>
+    <a className="whatsapp" href="https://wa.me/15085075431?text=Hello%21%20I%27d%20like%20information%20about%20booking%20Marcelli%20%26%20Mariani%20for%20an%20event." target="_blank" rel="noreferrer" aria-label="Contato pelo WhatsApp"><span>WA</span></a>
   </main>;
 }
 
