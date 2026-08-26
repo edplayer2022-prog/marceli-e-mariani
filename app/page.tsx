@@ -12,13 +12,13 @@ const shows = [
   {day:'15',month:'PRÃ“X.',city:'Vineyard Grill, MA',venue:'13 Beach Street Extension',type:'Show ao vivo'},
 ];
 const gallery = [
-  {label:'Show especial',src:'/images/show-america.jpg',pos:'center'},
-  {label:'Marcelli & Mariani ao vivo',src:'/images/show-logo.jpg',pos:'center'},
-  {label:'Entre irmÃ£s',src:'/images/portrait-sisters.jpg',pos:'center'},
-  {label:'Por trÃ¡s das cÃ¢meras',src:'/images/behind-camera.jpg',pos:'center'},
-  {label:'Encontros',src:'/images/backstage-guests.jpg',pos:'center'},
-  {label:'Juntas no palco',src:'/images/show-together.jpg',pos:'center'},
-  {label:'Alegria no palco',src:'/images/performance-green.jpg',pos:'center'},
+  {label:'Show especial',src:'/marceli-e-mariani/images/show-america.jpg',pos:'center'},
+  {label:'Marcelli & Mariani ao vivo',src:'/marceli-e-mariani/images/show-logo.jpg',pos:'center'},
+  {label:'Entre irmÃ£s',src:'/marceli-e-mariani/images/portrait-sisters.jpg',pos:'center'},
+  {label:'Por trÃ¡s das cÃ¢meras',src:'/marceli-e-mariani/images/behind-camera.jpg',pos:'center'},
+  {label:'Encontros',src:'/marceli-e-mariani/images/backstage-guests.jpg',pos:'center'},
+  {label:'Juntas no palco',src:'/marceli-e-mariani/images/show-together.jpg',pos:'center'},
+  {label:'Alegria no palco',src:'/marceli-e-mariani/images/performance-green.jpg',pos:'center'},
 ];
 
 export default function Home(){
