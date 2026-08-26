@@ -45,7 +45,7 @@ export default function Home(){
     if(wheelLocked.current)return;
     wheelLocked.current=true;
     moveGallery(movement>0?1:-1);
-    window.setTimeout(()=>{wheelLocked.current=false},420);
+    window.setTimeout(()=>{wheelLocked.current=false},560);
   }
 
   function startGalleryDrag(event:PointerEvent<HTMLDivElement>){
@@ -147,7 +147,7 @@ export default function Home(){
     <section className="gallery section" id="galeria">
       <div className="heading-row"><div><div className="section-kicker light">05 — GALERIA</div><h2>Palco, encontros<br/>e <em>memórias.</em></h2><p className="gallery-hint">Role, arraste ou deslize para explorar.</p></div><div className="gallery-controls"><button aria-label="Foto anterior" onClick={()=>moveGallery(-1)}><ChevronLeft/></button><span>0{galleryIndex+1} / 0{gallery.length}</span><button aria-label="Próxima foto" onClick={()=>moveGallery(1)}><ChevronRight/></button></div></div>
       <div className="gallery-viewport" onWheel={handleGalleryWheel} onPointerDown={startGalleryDrag} onPointerUp={finishGalleryDrag} onPointerCancel={()=>{dragStart.current=null}}>
-        <div className="gallery-strip" style={{transform:`translateX(-${galleryIndex*16.5}%)`}}>{gallery.map((item,i)=>{const offset=i-galleryIndex;return <figure className={i===galleryIndex?'active':''} style={{'--rotation':`${Math.max(-5,Math.min(5,offset*1.8))}deg`,'--lift':`${Math.min(22,Math.abs(offset)*8)}px`} as CSSProperties} key={item.label}><div style={{backgroundImage:`linear-gradient(0deg,#26191d55,#26191d22),url('${item.src}')`,backgroundPosition:'center'}}/><figcaption>{item.label}</figcaption></figure>})}</div>
+        <div className="gallery-strip" style={{transform:`translate3d(-${galleryIndex*16.5}%,0,0)`}}>{gallery.map((item,i)=>{const offset=i-galleryIndex;return <figure className={i===galleryIndex?'active':''} style={{'--rotation':`${Math.max(-3.8,Math.min(3.8,offset*1.25))}deg`,'--lift':`${Math.min(14,Math.abs(offset)*5)}px`} as CSSProperties} key={item.label}><div style={{backgroundImage:`linear-gradient(0deg,#130b0d18,#130b0d08),url('${item.src}')`,backgroundPosition:'center'}}/><figcaption>{item.label}</figcaption></figure>})}</div>
       </div>
     </section>
 
