@@ -108,10 +108,9 @@ export default function Home(){
       </div>
     </section>
 
-    <section className="video-section" id="video">
-      <div className="video-copy"><div className="section-kicker light">03 — APRESENTAÇÕES</div><h2>Energia que<br/>chega perto<br/><em>do público.</em></h2></div>
-      <a className="video-play" href={instagram} target="_blank" rel="noreferrer" aria-label="Assistir às apresentações no Instagram"><Play fill="currentColor"/></a>
-      <div className="video-caption"><span>MARCELLI & MARIANI</span><small>Veja covers, shows e bastidores no Instagram</small></div>
+    <section className="video-section has-embed" id="video">
+      <div className="video-copy"><div className="section-kicker light">03 — MÚSICA & VÍDEO</div><h2>Dê o play.<br/>Sinta essa<br/><em>conexão.</em></h2><p>Assista e ouça Marcelli & Mariani sem sair do site.</p><a className="youtube-link" href="https://youtu.be/qDVRFyg_iKc" target="_blank" rel="noreferrer">Abrir no YouTube <ArrowRight/></a></div>
+      <div className="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/qDVRFyg_iKc?rel=0" title="Marcelli & Mariani — apresentação musical" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen loading="lazy"/></div>
     </section>
 
     <section className="agenda section" id="agenda">
